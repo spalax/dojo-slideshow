@@ -2,3 +2,32 @@ dojo-slideshow
 ==============
 
 Simple slideshow with fading effect
+
+Put project files to directory which could be accessed
+thru web server  http://your.domain/js/modules/front
+
+Usage Example:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+      dojoConfig = {
+          parseOnLoad: true,
+          packages: [
+              {
+                  name: "front",
+                  location: "/js/modules/front"
+              }
+          ]
+      };
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+</head>
+<body>
+  <div data-dojo-type="front/slideshow/Container" 
+       data-dojo-props='images:[{"src":"/images/slideshow/1.png","label":"Cherry"},
+                                {"src":"/images/slideshow/2.png","label":"Apple"}]'></div>
+</body>
+</html>
+```
