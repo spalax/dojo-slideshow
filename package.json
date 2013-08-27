@@ -1,0 +1,15 @@
+{
+    "name": "Slide-Show",
+    "description": "Simple Slideshow",
+    "version": "1.0",
+    "maintainers": [{
+        "name": "Milcrew",
+        "name": "Spalaxinco"
+    }],
+    "dependencies": {
+        "dojo": "~1.8.0",
+        "dijit": "~1.8.0",
+        "dojox": "~1.8.0"
+    },
+    "dojoBuild": "slideshow.profile.js"
+}
