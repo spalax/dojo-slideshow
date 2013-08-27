@@ -7,10 +7,11 @@ define([
     "dijit/_Widget",
     "dijit/_Container",
     "./Slide",
+    "./SlideLink",
     "dijit/_TemplatedMixin",
     "dojo/text!./templates/Container.html"
 ], function(declare, array, lang, fx, domStyle, _Widget, 
-            _Container, Slide, _TemplatedMixin,
+            _Container, Slide, SlideLink, _TemplatedMixin,
             template) {
     return declare('slideshow.Container', [ _Widget, _Container, _TemplatedMixin ], {
         templateString: template,
@@ -46,7 +47,13 @@ define([
         postCreate: function () {
             try {
                 array.forEach(this.images, function (image) {
-                    var child = new Slide(image);
+                    var child = null;
+                    if (typeof image['href'] != 'undefined') {
+                        child = new SlideLink(image);
+                    } else {
+                        child = new Slide(image);
+                    }
+
                     child.on('load', lang.hitch(this, '_loaded'));
                     this.addChild(child);
                 }, this);
