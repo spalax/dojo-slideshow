@@ -17,6 +17,7 @@ define([
         templateString: template,
         height: 795,
         width: 1122,
+        loading: true,
         _currentSlideIndex: -1,
         
         postMixInProperties: function () {
@@ -33,7 +34,8 @@ define([
         buildRendering: function () {
             try {
                 this.inherited(arguments);
-                domStyle.set(this.loadingNode, 'display', '');
+                !this.loading && this.domNode.removeChild(this.loadingNode);
+                this.loading && domStyle.set(this.loadingNode, 'display', '');
                 domStyle.set(this.containerNode, {'display': 'none',
                                                   'height': this.height+'px',
                                                   'width': this.width+'px',
@@ -88,7 +90,7 @@ define([
         
         _startSlideshow: function () {
             try {
-                domStyle.set(this.loadingNode, 'display', 'none');
+                this.loading && domStyle.set(this.loadingNode, 'display', 'none');
                 domStyle.set(this.containerNode, 'display', '');
                 this.nextSlide();
             } catch (e) {
