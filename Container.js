@@ -18,7 +18,6 @@ define([
         templateString: template,
         height: 795,
         width: 1122,
-        loading: true,
         _currentSlideIndex: -1,
         
         postMixInProperties: function () {
