@@ -59,7 +59,6 @@ define([
                     } else {
                         child = new Slide(image);
                     }
-
                     child.on('load', lang.hitch(this, '_loaded'));
                     this.addChild(child);
                 }, this);
@@ -83,7 +82,7 @@ define([
         _loaded: function () {
             try {
                 if (!this.__imagesLoaded) this.__imagesLoaded = 0;
-                if (++this.__imagesLoaded >= this.getChildren().length) {
+                if (++this.__imagesLoaded >= this.images.length) {
                     this._startSlideshow();
                 }
             } catch (e) {
