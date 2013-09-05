@@ -4,6 +4,7 @@ define([
     "dojo/_base/lang",
     "dojo/_base/fx",
     "dojo/dom-style",
+    "dojo/dom-construct",
     "dojo/query",
     "dijit/_Widget",
     "dijit/_Container",
@@ -11,7 +12,7 @@ define([
     "./SlideLink",
     "dijit/_TemplatedMixin",
     "dojo/text!./templates/Container.html"
-], function(declare, array, lang, fx, domStyle, query, _Widget,
+], function(declare, array, lang, fx, domStyle, domConstruct, query, _Widget,
             _Container, Slide, SlideLink, _TemplatedMixin,
             template) {
     return declare('slideshow.Container', [ _Widget, _Container, _TemplatedMixin ], {
@@ -38,6 +39,7 @@ define([
 
                 if (this.loadingNode) {
                     domStyle.set(this.loadingNode, 'display', '');
+                    domConstruct.place(this.loadingNode, this.domNode, 'first');
                 }
 
                 domStyle.set(this.containerNode, {'display': 'none',
@@ -93,9 +95,9 @@ define([
         
         _startSlideshow: function () {
             try {
-                this.loadingNode && domStyle.set(this.loadingNode, 'display', 'none');
                 domStyle.set(this.containerNode, 'display', '');
                 this.nextSlide();
+                this.loadingNode && domStyle.set(this.loadingNode, 'display', 'none');
             } catch (e) {
                 console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
                 throw e;
