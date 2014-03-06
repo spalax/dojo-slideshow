@@ -4,20 +4,21 @@ define([
     "dojo/_base/lang",
     "dojo/_base/fx",
     "dojo/dom-style",
+    "dojo/dom-construct",
+    "dojo/query",
     "dijit/_Widget",
     "dijit/_Container",
     "./Slide",
     "./SlideLink",
     "dijit/_TemplatedMixin",
     "dojo/text!./templates/Container.html"
-], function(declare, array, lang, fx, domStyle, _Widget, 
+], function(declare, array, lang, fx, domStyle, domConstruct, query, _Widget,
             _Container, Slide, SlideLink, _TemplatedMixin,
             template) {
     return declare('slideshow.Container', [ _Widget, _Container, _TemplatedMixin ], {
         templateString: template,
         height: 795,
         width: 1122,
-        loading: true,
         _currentSlideIndex: -1,
         
         postMixInProperties: function () {
@@ -34,8 +35,13 @@ define([
         buildRendering: function () {
             try {
                 this.inherited(arguments);
-                !this.loading && this.domNode.removeChild(this.loadingNode);
-                this.loading && domStyle.set(this.loadingNode, 'display', '');
+                this.loadingNode = query('.loader', this.domNode)[0];
+
+                if (this.loadingNode) {
+                    domStyle.set(this.loadingNode, 'display', '');
+                    domConstruct.place(this.loadingNode, this.domNode, 'first');
+                }
+
                 domStyle.set(this.containerNode, {'display': 'none',
                                                   'height': this.height+'px',
                                                   'width': this.width+'px',
@@ -55,7 +61,6 @@ define([
                     } else {
                         child = new Slide(image);
                     }
-
                     child.on('load', lang.hitch(this, '_loaded'));
                     this.addChild(child);
                 }, this);
@@ -79,7 +84,7 @@ define([
         _loaded: function () {
             try {
                 if (!this.__imagesLoaded) this.__imagesLoaded = 0;
-                if (++this.__imagesLoaded >= this.getChildren().length) {
+                if (++this.__imagesLoaded >= this.images.length) {
                     this._startSlideshow();
                 }
             } catch (e) {
@@ -90,9 +95,9 @@ define([
         
         _startSlideshow: function () {
             try {
-                this.loading && domStyle.set(this.loadingNode, 'display', 'none');
                 domStyle.set(this.containerNode, 'display', '');
                 this.nextSlide();
+                this.loadingNode && domStyle.set(this.loadingNode, 'display', 'none');
             } catch (e) {
                 console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
                 throw e;
