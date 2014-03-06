@@ -31,7 +31,7 @@ using the following command:
           ]
       };
     </script>
-    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
 </head>
 <body>
   <div data-dojo-type="front/slideshow/Container" 
