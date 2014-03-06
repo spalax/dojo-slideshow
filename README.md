@@ -10,7 +10,7 @@ thru web server  http://your.domain/js/modules/front
 
 ## Automatic Download with Bower
 
-dojo-ckeditor can be installed via [Bower](https://github.com/bower/bower)
+dojo-slideshow can be installed via [Bower](https://github.com/bower/bower)
 using the following command:
 
     bower install dojo-slideshow
