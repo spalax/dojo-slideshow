@@ -6,7 +6,16 @@ Simple slideshow with fading effect
 Put project files to directory which could be accessed
 thru web server  http://your.domain/js/modules/front
 
-Usage Example:
+# Installation
+
+## Automatic Download with Bower
+
+dojo-ckeditor can be installed via [Bower](https://github.com/bower/bower)
+using the following command:
+
+    bower install dojo-slideshow
+
+## Usage Example:
 ```html
 <!DOCTYPE html>
 <html lang="en">
