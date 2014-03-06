@@ -1,0 +1,22 @@
+{
+  "name": "dojo-slideshow",
+  "version": "0.0.1",
+  "authors": [
+    "Oleksii Mylotskyi <spalaxinco@gmail.com>"
+  ]
+  ,
+  "license": "MIT",
+  
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+
+  "dependencies": {
+    "dojo": ">=1.8",
+    "dijit": ">=1.8"
+  }
+}

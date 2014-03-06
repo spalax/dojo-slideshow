@@ -1,10 +1,9 @@
 {
-    "name": "Slide-Show",
+    "name": "dojo-slideshow",
     "description": "Simple Slideshow",
     "version": "1.0",
     "maintainers": [{
-        "name": "Milcrew",
-        "name": "Spalaxinco"
+        "name": "Oleksii Mylotskyi <spalaxinco@gmail.com> "
     }],
     "dependencies": {
         "dojo": "~1.8.0",
