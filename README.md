@@ -1,10 +1,7 @@
 dojo-slideshow
 ==============
 
-Simple slideshow with fading effect
-
-Put project files to directory which could be accessed
-thru web server  http://your.domain/js/modules/front
+Simple slideshow with fading effect.
 
 # Installation
 
