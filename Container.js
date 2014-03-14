@@ -1,4 +1,5 @@
 define([
+    "require",
     "dojo/_base/declare",
     "dojo/_base/array",
     "dojo/_base/lang",
@@ -6,19 +7,25 @@ define([
     "dojo/dom-style",
     "dojo/dom-construct",
     "dojo/query",
+    "dojo/DeferredList",
+    "dojo/Deferred",
     "dijit/_Widget",
     "dijit/_Container",
     "./Slide",
     "./SlideLink",
     "dijit/_TemplatedMixin",
     "dojo/text!./templates/Container.html"
-], function(declare, array, lang, fx, domStyle, domConstruct, query, _Widget,
+], function(_require, declare, array, lang, fx, domStyle, domConstruct, query,
+            DeferredList, Deferred, _Widget,
             _Container, Slide, SlideLink, _TemplatedMixin,
             template) {
     return declare('slideshow.Container', [ _Widget, _Container, _TemplatedMixin ], {
         templateString: template,
         height: 795,
         width: 1122,
+        interval: 3000,
+        controls: 'Buttons',
+        controlsParams: {},
         _currentSlideIndex: -1,
         
         postMixInProperties: function () {
@@ -54,6 +61,8 @@ define([
         
         postCreate: function () {
             try {
+                var _defArray = [];
+
                 array.forEach(this.images, function (image) {
                     var child = null;
                     if (typeof image['href'] != 'undefined') {
@@ -61,32 +70,40 @@ define([
                     } else {
                         child = new Slide(image);
                     }
-                    child.on('load', lang.hitch(this, '_loaded'));
+                    var _def = new Deferred();
+                    child.on('load', lang.hitch(_def, 'resolve'));
+
+                    _defArray.push(_def);
                     this.addChild(child);
                 }, this);
+
+                if (this.controls) {
+                    var _controlsDef = new Deferred();
+                    _defArray.push(_controlsDef);
+
+                    _require(['./controls/'+this.controls], lang.hitch(this, function (Controls){
+                        var controls = new Controls(lang.mixin(this.controlsParams, {slideshowContainer: this}));
+                        controls.placeAt(this.domNode, 'last');
+                        this.own(controls);
+                        _controlsDef.resolve();
+                    }));
+                }
+
+                var deferredList = new DeferredList(_defArray);
+                deferredList.then(lang.hitch(this, '_startSlideshow'));
             } catch (e) {
                 console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
                 throw e;
             }
         },
+
+
         
         _runTimer: function () {
             try {
-                this.__timeout = setTimeout(lang.hitch(this, function (){
-                   this.nextSlide();
-                }), 3000);
-            } catch (e) {
-                console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
-                throw e;
-            }
-        },
-        
-        _loaded: function () {
-            try {
-                if (!this.__imagesLoaded) this.__imagesLoaded = 0;
-                if (++this.__imagesLoaded >= this.images.length) {
-                    this._startSlideshow();
-                }
+                this._timerHandle = this.defer(function (){
+                    this.nextSlide();
+                }, this.interval || 3000);
             } catch (e) {
                 console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
                 throw e;
@@ -103,11 +120,35 @@ define([
                 throw e;
             }
         },
+
+        selectSlide: function (slide) {
+            try {
+                var children = this.getChildren();
+                array.forEach(children, function (child, index) {
+                    try {
+                        if (child.get('id') != slide.get('id') || index == this._currentSlideIndex) {
+                            return;
+                        }
+
+                        this._timerHandle.remove();
+                        children[this._currentSlideIndex].hide();
+                        children[index].show();
+                        this._currentSlideIndex = index;
+                        this._runTimer();
+                    } catch (e) {
+                         console.error(this.declaredClass, arguments, e);
+                         throw e;
+                    }
+                }, this);
+            } catch (e) {
+                 console.error(this.declaredClass, arguments, e);
+                 throw e;
+            }
+        },
         
         nextSlide: function () {
             try {
                 var children = this.getChildren();
-                var hideIndex = 0;
                 
                 if (this._currentSlideIndex != -1) {
                     children[this._currentSlideIndex].hide();
