@@ -17,7 +17,8 @@ define([
                 throw e;
             }
         },
-        
+
+        onShow: function(){},
         onLoad: function(){},
         
         hide: function () {
@@ -51,6 +52,8 @@ define([
                     },
                     rate: 5
                 }).play();
+
+                this.onShow();
             } catch (e) {
                 console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
                 throw e;
