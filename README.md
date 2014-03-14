@@ -1,12 +1,18 @@
 dojo-slideshow
 ==============
 
-Simple slideshow with fading effect
+Simple slideshow with fading effect.
 
-Put project files to directory which could be accessed
-thru web server  http://your.domain/js/modules/front
+# Installation
 
-Usage Example:
+## Automatic Download with Bower
+
+dojo-slideshow can be installed via [Bower](https://github.com/bower/bower)
+using the following command:
+
+    bower install dojo-slideshow
+
+## Usage Example:
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +28,7 @@ Usage Example:
           ]
       };
     </script>
-    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
 </head>
 <body>
   <div data-dojo-type="front/slideshow/Container" 
