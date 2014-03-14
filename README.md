@@ -1,18 +1,12 @@
 dojo-slideshow
 ==============
 
-Simple slideshow with fading effect.
+Simple slideshow with fading effect
 
-# Installation
+Put project files to directory which could be accessed
+thru web server  http://your.domain/js/modules/front
 
-## Automatic Download with Bower
-
-dojo-slideshow can be installed via [Bower](https://github.com/bower/bower)
-using the following command:
-
-    bower install dojo-slideshow
-
-## Usage Example:
+Usage Example:
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -20,20 +14,19 @@ using the following command:
   <script>
       dojoConfig = {
           parseOnLoad: true,
-          packages: [
-              {
-                  name: "front",
-                  location: "/js/modules/front"
-              }
-          ]
+          async: true
       };
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
 </head>
 <body>
-  <div data-dojo-type="front/slideshow/Container" 
-       data-dojo-props='images:[{"src":"/images/slideshow/1.png","label":"Cherry"},
-                                {"src":"/images/slideshow/2.png","label":"Apple"}]'></div>
+  <div data-dojo-type="dojo-slideshow/Container"
+           data-dojo-props='images:[{"src":"/images/slideshow/1.svg","label":"Cherry"},
+                                    {"src":"/images/slideshow/2.svg","label":"Apple"},
+                                    {"src":"/images/slideshow/3.svg","label":"Banana"},
+                                    {"src":"/images/slideshow/4.svg","label":"Strawberry"}],
+                            controlsParams: {"class": "buttons-control"},
+                            controls: "Buttons"'></div>
 </body>
 </html>
 ```
