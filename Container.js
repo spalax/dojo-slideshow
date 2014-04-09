@@ -23,6 +23,7 @@ define([
         templateString: template,
         height: 795,
         width: 1122,
+        doNotSetContainerDimension: false,
         interval: 3000,
         controls: 'Buttons',
         controlsParams: {},
@@ -49,10 +50,15 @@ define([
                     domConstruct.place(this.loadingNode, this.domNode, 'first');
                 }
 
-                domStyle.set(this.containerNode, {'display': 'none',
-                                                  'height': this.height+'px',
-                                                  'width': this.width+'px',
-                                                  'position': 'relative'});
+                var params = {'display': 'none',
+                              'position': 'relative'};
+
+                if (!this.doNotSetContainerDimension) {
+                    params['width'] = this.width+'px';
+                    params['height'] = this.height+'px';
+                }
+
+                domStyle.set(this.containerNode, params);
             } catch (e) {
                 console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
                 throw e;
