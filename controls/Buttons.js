@@ -11,7 +11,7 @@ define([
 ], function(declare, lang, array, _Widget, _TemplatedMixin, domConstruct, domClass, on, template) {
     return declare('slideshow.controls.Buttons', [ _Widget, _TemplatedMixin ], {
         templateString: template,
-        buttonClass: 'btn',
+        buttonClass: 'slideshowControlButton',
         activityClass: 'active',
 
         _buttons: [],
