@@ -1,41 +1,42 @@
 define([
-    "require",
-    "dojo/_base/declare",
-    "dojo/_base/array",
-    "dojo/_base/lang",
-    "dojo/_base/fx",
-    "dojo/dom-style",
-    "dojo/dom-construct",
-    "dojo/query",
-    "dojo/DeferredList",
-    "dojo/Deferred",
-    "dijit/_Widget",
-    "dijit/_Container",
-    "./Slide",
-    "./SlideLink",
-    "dijit/_TemplatedMixin",
-    "dojo/text!./templates/Container.html"
+    'require',
+    'dojo/_base/declare',
+    'dojo/_base/array',
+    'dojo/_base/lang',
+    'dojo/_base/fx',
+    'dojo/dom-style',
+    'dojo/dom-construct',
+    'dojo/query',
+    'dojo/DeferredList',
+    'dojo/Deferred',
+    'dojo/on',
+    'dijit/_Widget',
+    'dijit/_Container',
+    './Slide',
+    './SlideLink',
+    'dijit/_TemplatedMixin',
+    'dojo/text!./templates/Container.html'
 ], function(_require, declare, array, lang, fx, domStyle, domConstruct, query,
-            DeferredList, Deferred, _Widget,
+            DeferredList, Deferred, on, _Widget,
             _Container, Slide, SlideLink, _TemplatedMixin,
             template) {
     return declare('slideshow.Container', [ _Widget, _Container, _TemplatedMixin ], {
         templateString: template,
         height: 795,
         width: 1122,
-        doNotSetContainerDimension: false,
         interval: 3000,
         controls: 'Buttons',
+        autoHeight: false,
         controlsParams: {},
         _currentSlideIndex: -1,
         
         postMixInProperties: function () {
             try {
                 if (!this.images) {
-                    throw "Images must be defined";
+                    throw 'Images must be defined';
                 }
             } catch (e) {
-                console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
+                console.error(this.declaredClass+' '+arguments.callee.nom, arguments, e);
                 throw e;
             }
         },
@@ -53,14 +54,17 @@ define([
                 var params = {'display': 'none',
                               'position': 'relative'};
 
-                if (!this.doNotSetContainerDimension) {
+                if (parseFloat(params['width']) > 0) {
                     params['width'] = this.width+'px';
+                }
+
+                if (parseFloat(params['height']) > 0) {
                     params['height'] = this.height+'px';
                 }
 
                 domStyle.set(this.containerNode, params);
             } catch (e) {
-                console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
+                console.error(this.declaredClass+' '+arguments.callee.nom, arguments, e);
                 throw e;
             }
         },
@@ -76,6 +80,13 @@ define([
                     } else {
                         child = new Slide(image);
                     }
+
+                    if (this.autoHeight) {
+                        child.on('resize', lang.hitch(this, function (evt) {
+                            domStyle.set(this.containerNode, 'height', evt.height+'px');
+                        }));
+                    }
+
                     var _def = new Deferred();
                     child.on('load', lang.hitch(_def, 'resolve'));
 
@@ -98,7 +109,7 @@ define([
                 var deferredList = new DeferredList(_defArray);
                 deferredList.then(lang.hitch(this, '_startSlideshow'));
             } catch (e) {
-                console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
+                console.error(this.declaredClass+' '+arguments.callee.nom, arguments, e);
                 throw e;
             }
         },
@@ -111,7 +122,7 @@ define([
                     this.nextSlide();
                 }, this.interval || 3000);
             } catch (e) {
-                console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
+                console.error(this.declaredClass+' '+arguments.callee.nom, arguments, e);
                 throw e;
             }
         },
@@ -122,7 +133,7 @@ define([
                 this.nextSlide();
                 this.loadingNode && domStyle.set(this.loadingNode, 'display', 'none');
             } catch (e) {
-                console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
+                console.error(this.declaredClass+' '+arguments.callee.nom, arguments, e);
                 throw e;
             }
         },
@@ -170,7 +181,7 @@ define([
                 children[this._currentSlideIndex].show();
                 this._runTimer();
             } catch (e) {
-                console.error(this.declaredClass+" "+arguments.callee.nom, arguments, e);
+                console.error(this.declaredClass+' '+arguments.callee.nom, arguments, e);
                 throw e;
             }
         }
