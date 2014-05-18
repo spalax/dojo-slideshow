@@ -12,13 +12,14 @@ define([
     'dojo/on',
     'dijit/_Widget',
     'dijit/_Container',
+    'dojo/dom-geometry',
     './Slide',
     './SlideLink',
     'dijit/_TemplatedMixin',
     'dojo/text!./templates/Container.html'
 ], function(_require, declare, array, lang, fx, domStyle, domConstruct, query,
             DeferredList, Deferred, on, _Widget,
-            _Container, Slide, SlideLink, _TemplatedMixin,
+            _Container, domGeom, Slide, SlideLink, _TemplatedMixin,
             template) {
     return declare('slideshow.Container', [ _Widget, _Container, _TemplatedMixin ], {
         templateString: template,
@@ -130,8 +131,14 @@ define([
         _startSlideshow: function () {
             try {
                 domStyle.set(this.containerNode, 'display', '');
+
                 this.nextSlide();
                 this.loadingNode && domStyle.set(this.loadingNode, 'display', 'none');
+
+                if (this.autoHeight) {
+                    domStyle.set(this.containerNode, 'height',
+                                 domGeom.getContentBox(this.getChildren()[0].imageNode).h+'px');
+                }
             } catch (e) {
                 console.error(this.declaredClass+' '+arguments.callee.nom, arguments, e);
                 throw e;
