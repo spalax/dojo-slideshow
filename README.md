@@ -6,6 +6,8 @@ Simple slideshow with fading effect
 Put project files to directory which could be accessed
 thru web server  http://your.domain/js/modules/front
 
+Slideshow support responsive mode via autoHeight: true.
+
 Usage Example:
 ```html
 <!DOCTYPE html>
